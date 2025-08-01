@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy National Girlfriend Day!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #ffc0cb;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .heart {
+      width: 150px;
+      height: 150px;
+      background-color: red;
+      position: relative;
+      transform: rotate(-45deg);
+      cursor: pointer;
+      animation: beat 1s infinite;
+      margin: 0 auto;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 150px;
+      height: 150px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -75px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 75px;
+      top: 0;
+    }
+
+    @keyframes beat {
+      0%, 100% {
+        transform: rotate(-45deg) scale(1);
+      }
+      50% {
+        transform: rotate(-45deg) scale(1.1);
+      }
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: white;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .show {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .second-screen {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: #ffc0cb;
+    }
+
+    .second-screen img {
+      max-width: 300px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+    }
+
+    .second-screen p {
+      font-size: 1.6rem;
+      color: white;
+      padding: 0 20px;
+    }
+
+    .falling {
+      position: absolute;
+      animation: fall 5s linear infinite;
+      font-size: 2rem;
+      top: 0;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-150px) rotate(0deg); opacity: 1; top: 0; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+
+  <div class="container" id="main-screen">
+    <div class="heart" onclick="triggerLove()"></div>
+    <div id="message" class="message">
+      You (yes YOU 🫵🏽) are the best girlfriend ever!!
+    </div>
+  </div>
+
+  <div class="second-screen" id="second-screen">
+    <img src="xd.jpg" alt="Kitten with flowers">
+    <p>A flower for you my choopy, I love you so very much. Happy National Girlfriend Day my love.</p>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    function triggerLove() {
+      const message = document.getElementById('message');
+      const heart = document.querySelector('.heart');
+      const mainScreen = document.getElementById('main-screen');
+      const secondScreen = document.getElementById('second-screen');
+
+      heart.classList.remove('heart');
+      message.classList.add('show');
+
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      setTimeout(() => {
+        mainScreen.style.display = 'none';
+        secondScreen.style.display = 'flex';
+        startFallingEmojis();
+      }, 2500);
+    }
+
+    function startFallingEmojis() {
+      const emojis = ['💖', '💋', '🌹', '❤️', '😘', '💐'];
+      const music = document.getElementById('bg-music');
+      music.play();
+
+      for (let i = 0; i < 30; i++) {
+        const emoji = document.createElement('div');
+        emoji.classList.add('falling');
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        document.getElementById('second-screen').appendChild(emoji);
+      }
+    }
+  </script>
+</body>
+</html>
